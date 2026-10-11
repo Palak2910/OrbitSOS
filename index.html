@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="OrbitSOS satellite systems and orbital failure simulator.">
+  <title>OrbitSOS | Satellite Mission Control</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="OrbitSOS home">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>
+          <span class="brand-name">ORBIT<span class="brand-accent">SOS</span></span>
+          <span class="brand-subtitle">SATELLITE MISSION CONTROL</span>
+        </span>
+      </a>
+      <div class="mission-meta">
+        <span class="hide-small">MISSION &nbsp;ORB-2049</span>
+        <span class="hide-small">LEO &nbsp;·&nbsp; 548 KM</span>
+        <span class="live-label"><i class="live-dot"></i>SIMULATION LIVE</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="eyebrow"><span class="eyebrow-line"></span> FLIGHT OPERATIONS &nbsp;/&nbsp; SIMULATOR</div>
+      <div class="page-heading">
+        <div>
+          <h1>Satellite health monitor</h1>
+          <p class="intro">Monitor spacecraft systems and practice responding to in-orbit failures.</p>
+        </div>
+        <div class="mission-clock">
+          <span class="mini-label">MISSION ELAPSED</span>
+          <strong id="mission-clock">00:00:00</strong>
+        </div>
+      </div>
+
+      <section class="dashboard" aria-label="Satellite simulator dashboard">
+        <section class="panel orbit-panel" aria-label="Orbit visualization">
+          <div class="panel-heading">
+            <div>
+              <div class="panel-title">Orbital view</div>
+              <div class="panel-hint">SPACECRAFT TRACKING / LOW EARTH ORBIT</div>
+            </div>
+            <div class="panel-label"><span class="live-dot"></span>EARTH VIEW</div>
+          </div>
+          <div class="scene">
+            <div class="scene-grid" aria-hidden="true"></div>
+            <div class="orbit orbit-outer" aria-hidden="true"></div>
+            <div class="orbit orbit-inner" aria-hidden="true"></div>
+            <div class="earth" role="img" aria-label="Illustration of planet Earth"></div>
+            <div class="satellite-orbit" aria-hidden="true">
+              <div class="satellite">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 9l6 6m-4-8 4-2 4 4-2 4m-8-4-2 2 4 4 2-2m-7 1-2 2m11-1 2 2" stroke="#78e8f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 8h5v8H2zm15 0h5v8h-5z" fill="#4699c7" stroke="#a4eaff" stroke-width=".8"/>
+                </svg>
+              </div>
+            </div>
+            <div class="scene-caption">
+              <span>ORBIT TRACK &nbsp;/&nbsp; LEO</span>
+              <span class="orbit-status" id="orbit-status">NOMINAL</span>
+            </div>
+          </div>
+          <div class="orbit-stats">
+            <div class="orbit-stat"><span>ALTITUDE</span><strong><span id="altitude-value">548.2</span> km</strong></div>
+            <div class="orbit-stat"><span>VELOCITY</span><strong><span id="velocity-value">7.6</span> km/s</strong></div>
+            <div class="orbit-stat"><span>ORBIT PERIOD</span><strong>95.4 min</strong></div>
+          </div>
+        </section>
+
+        <div class="right-column">
+          <section class="panel systems-panel" aria-label="Satellite system indicators">
+            <div class="panel-heading">
+              <div>
+                <div class="panel-title">System telemetry</div>
+                <div class="panel-hint">REAL-TIME SIMULATED READINGS</div>
+              </div>
+              <span class="unit-badge">UNIT 01</span>
+            </div>
+            <div class="systems-list">
+              <div class="system">
+                <div class="system-top"><span class="system-name"><span class="system-icon">⚡</span>Power reserve</span><span class="system-value" id="power-value">98%</span></div>
+                <div class="bar-track"><div class="bar-fill" id="power-bar"></div></div>
+              </div>
+              <div class="system">
+                <div class="system-top"><span class="system-name"><span class="system-icon">◉</span>Core temperature</span><span class="system-value" id="temperature-value">24 °C</span></div>
+                <div class="bar-track"><div class="bar-fill" id="temperature-bar"></div></div>
+              </div>
+              <div class="system">
+                <div class="system-top"><span class="system-name"><span class="system-icon">⌁</span>Communication link</span><span class="system-value" id="communication-value">CONNECTED</span></div>
+                <div class="signal-bars" id="communication-bar" aria-label="Signal strength: strong">
+                  <i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+              <div class="system">
+                <div class="system-top"><span class="system-name"><span class="system-icon">⊕</span>Attitude control</span><span class="system-value" id="attitude-value">STABLE</span></div>
+                <div class="attitude-track"><div class="attitude-marker" id="attitude-marker"></div></div>
+                <div class="attitude-scale"><span>−180°</span><span>0°</span><span>+180°</span></div>
+              </div>
+            </div>
+            <div class="alert-box" id="alert-box" role="status" aria-live="polite">
+              <span class="alert-icon" id="alert-icon">✓</span>
+              <span id="alert-message">All spacecraft systems are nominal. Ready for mission.</span>
+            </div>
+          </section>
+
+          <section class="panel controls-panel" aria-label="Simulation controls">
+            <div class="panel-heading">
+              <div>
+                <div class="panel-title">Failure simulator</div>
+                <div class="panel-hint">SELECT A FAULT TO TEST YOUR RESPONSE</div>
+              </div>
+              <span class="control-indicator" aria-hidden="true"></span>
+            </div>
+            <div class="button-grid">
+              <button class="failure-button" type="button" data-failure="power" aria-pressed="false"><span class="button-symbol">⚡</span>Power failure</button>
+              <button class="failure-button" type="button" data-failure="temperature" aria-pressed="false"><span class="button-symbol">♨</span>Overheating</button>
+              <button class="failure-button" type="button" data-failure="communication" aria-pressed="false"><span class="button-symbol">⌁</span>Signal loss</button>
+              <button class="failure-button" type="button" data-failure="attitude" aria-pressed="false"><span class="button-symbol">◉</span>Attitude drift</button>
+              <button class="reset-button" type="button" id="reset-button"><span aria-hidden="true">↻</span> Reset all systems</button>
+            </div>
+            <p class="control-note">Failures can be combined. Reset restores nominal readings.</p>
+          </section>
+        </div>
+      </section>
+      <footer><span>ORBITAL SYSTEMS SIMULATOR &nbsp;·&nbsp; TRAINING MODE</span><span>ALL READINGS ARE SIMULATED</span></footer>
+    </main>
+  </div>
+</body>
+</html>
